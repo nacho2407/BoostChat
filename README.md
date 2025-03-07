@@ -1,2 +1,3 @@
 # BoostChat
-A simple and fast chat program
+
+A simple and fast chat service
