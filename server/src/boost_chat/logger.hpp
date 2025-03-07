@@ -26,7 +26,9 @@
 
                         // Deleted on purpose
                         Logger(const Logger&) = delete;
+                        Logger(Logger&&) = delete;
                         Logger& operator =(const Logger&) = delete;
+                        Logger& operator =(Logger&&) = delete;
                 private:
                         Logger() = default;
                 };
