@@ -2,6 +2,7 @@
         #define BOOST_CHAT_SERVER_HPP
 
         #include "def.hpp"
+        #include "session.hpp"
 
         #include <boost/asio.hpp>
 

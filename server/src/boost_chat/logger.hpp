@@ -3,6 +3,9 @@
 
         #include "def.hpp"
 
+        #include <boost/asio.hpp>
+
+        #include <string>
         #include <string_view>
 
         namespace boost_chat
@@ -14,14 +17,19 @@
                         static Logger& get_instance(void);
 
                         /**
-                         * @brief Print a log message
+                         * @brief Print a connection message;
                          */
-                        void info(std::string_view msg);
+                        void conn(boost::asio::ip::address remote_addr);
 
                         /**
                          * @brief Print an error message
                          */
                         void error(std::string_view msg);
+
+                        /**
+                         * @brief Print a log message
+                         */
+                        void info(std::string_view msg);
 
                         // Deleted on purpose
                         Logger(const Logger&) = delete;
@@ -30,6 +38,11 @@
                         Logger& operator =(Logger&&) = delete;
                 private:
                         Logger() = default;
+
+                        /**
+                         * @brief Get local time
+                         */
+                        std::string get_time(void);
                 };
         }
 #endif
