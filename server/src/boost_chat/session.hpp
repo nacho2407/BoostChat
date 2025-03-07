@@ -29,7 +29,7 @@
                         Server& pserver_;
 
                         /**
-                         * @brief Read message from client
+                         * @brief Read a message from client
                          */
                         void read(void);
                 };
