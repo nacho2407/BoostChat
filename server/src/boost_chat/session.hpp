@@ -7,15 +7,13 @@
 
         #include <array>
         #include <memory>
-        #include <mutex>
-        #include <set>
         #include <string>
 
         using boost::asio::ip::tcp;
 
         namespace boost_chat
         {
-                class Session
+                class Session: public std::enable_shared_from_this<Session>
                 {
                 public:
                         Session(tcp::socket&& socket, Server& pserver);
