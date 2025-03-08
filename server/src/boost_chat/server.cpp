@@ -19,12 +19,12 @@ void boost_chat::Server::accept(void)
                 static Logger& logger = Logger::get_instance();
 
                 if(!ec) {
-                        logger.conn(socket.remote_endpoint().address());
+                        logger.conn(socket);
 
-                        clients_.insert(std::make_shared<Session>(std::move(socket), this));
+                        auto session = std::make_shared<Session>(std::move(socket), clients_, clients_mtx_, tpool_);
                 }
                 else
-                        logger.error("Error connecting to client socket");
+                        logger.error(socket, "Client connecting error");
                 
                 accept();
         });
