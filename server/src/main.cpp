@@ -1,4 +1,4 @@
-#include "tester.hpp"
+#include "boost_chat/tester.hpp"
 
 /**
  * @brief Test modules

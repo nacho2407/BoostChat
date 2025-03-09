@@ -1,6 +1,6 @@
 #include "tester.hpp"
 
-#include "boost_chat/logger.hpp"
+#include "logger.hpp"
 
 #include <boost/asio.hpp>
 
