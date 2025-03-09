@@ -14,5 +14,7 @@ int main(void)
 
 static int test(void)
 {
-        return boost_chat::logger_test();
+        static boost_chat::Tester& tester = boost_chat::Tester::get_instance();
+
+        return tester.logger_test();
 }

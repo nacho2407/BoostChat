@@ -4,11 +4,17 @@
 
 #include <boost/asio.hpp>
 
-int boost_chat::logger_test(void)
+boost_chat::Tester& boost_chat::Tester::get_instance(void)
+{
+        static Tester instance;
+
+        return instance;
+}
+
+int boost_chat::Tester::logger_test(void)
 {
         static Logger& logger = Logger::get_instance();
 
-        logger.conn(boost::asio::ip::make_address("127.0.0.1"));
         logger.error("Test error message");
         logger.info("Test information message");
 

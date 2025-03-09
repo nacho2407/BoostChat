@@ -13,25 +13,30 @@ boost_chat::Session::Session(tcp::socket&& socket, std::set<std::shared_ptr<Sess
         
         lk.unlock();
 
-        socket_.async_read_some(boost::asio::buffer(buffer, MAX_BUFFER_SIZE), [this](boost::system::error_code ec, std::size_t length) {
+        socket_.async_read_some(boost::asio::buffer(buffer_, MAX_BUFFER_SIZE), [this](boost::system::error_code ec, std::size_t length) {
                 static Logger& logger = Logger::get_instance();
 
                 if(!ec) {
-                        cid_ = std::string(buffer.data(), length);
+                        // Configure client's id
+                        cid_ = std::string(buffer_.data(), length);
 
+                        // Start reading
                         read();
                 }
                 else {
                         logger.error(socket_, "Client configuration error");
 
-                        // 작성중
+                        std::unique_lock<std::mutex> lk(clients_mtx_);
+                        clients_.erase(shared_from_this());
+
+                        lk.unlock();
                 }
         });
 }
 
 boost_chat::Session::~Session()
 {
-        // 작성중
+        socket_.close();
 }
 
 void boost_chat::Session::broadcast(void)

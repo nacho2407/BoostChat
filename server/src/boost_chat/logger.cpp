@@ -28,7 +28,7 @@ void boost_chat::Logger::error(std::string_view msg)
 
 void boost_chat::Logger::error(tcp::socket& remote_sck, std::string_view msg)
 {
-        // 작성중
+        std::cerr << "[ Error\t] " << get_time() << " - " << msg << ": " << remote_sck.remote_endpoint().address().to_string() << "\n";
 }
 
 void boost_chat::Logger::info(std::string_view msg)
@@ -38,7 +38,7 @@ void boost_chat::Logger::info(std::string_view msg)
 
 void boost_chat::Logger::info(tcp::socket& remote_sck, std::string_view msg)
 {
-        // 작성중
+        std::cout << "[ Info\t] " << get_time() << " - " << msg << ": " << remote_sck.remote_endpoint().address().to_string() << std::endl;
 }
 
 std::string boost_chat::Logger::get_time(void)

@@ -26,7 +26,7 @@ namespace boost_chat
                 std::string cid_;
 
                 // Buffer for writing and reading a message
-                std::array<char, MAX_BUFFER_SIZE> buffer;
+                std::array<char, MAX_BUFFER_SIZE> buffer_;
 
                 std::set<std::shared_ptr<Session>>& clients_;
                 std::mutex& clients_mtx_;
