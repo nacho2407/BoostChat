@@ -5,6 +5,7 @@
 
 #include <boost/asio.hpp>
 
+#include <mutex>
 #include <string>
 #include <string_view>
 
@@ -50,6 +51,8 @@ namespace boost_chat
                 Logger& operator =(Logger&&) = delete;
         private:
                 Logger() = default;
+
+                std::mutex logger_mtx_;
 
                 /**
                  * @brief Get local time

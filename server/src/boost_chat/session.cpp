@@ -5,6 +5,14 @@
 #include <cstddef>
 #include <utility>
 
+/**
+ * - clients_에 Session 넣고 빼는 기능을 Server로 옮기기
+ * 
+ * - broadcast를 Server로 옮기기
+ * 
+ * - 람다 함수 캡처 시 this보다 self 활용하기
+ */
+
 boost_chat::Session::Session(tcp::socket&& socket, Server& pserver)
         : socket_(std::move(socket)), pserver_(pserver)
 {
