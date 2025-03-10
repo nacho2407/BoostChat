@@ -2,6 +2,7 @@
 #define BOOST_CHAT_SESSION_HPP
 
 #include "def.hpp"
+#include "server.hpp"
 
 #include <boost/asio.hpp>
 
@@ -10,6 +11,7 @@
 #include <mutex>
 #include <set>
 #include <string>
+#include <string_view>
 
 using boost::asio::ip::tcp;
 
@@ -18,7 +20,7 @@ namespace boost_chat
         class Session: public std::enable_shared_from_this<Session>
         {
         public:
-                Session(tcp::socket&& socket, std::set<std::shared_ptr<Session>>& clients, std::mutex& clients_mtx, boost::asio::thread_pool& tpool);
+                Session(tcp::socket&& socket, Server& pserver);
 
                 ~Session();
         private:
@@ -28,14 +30,12 @@ namespace boost_chat
                 // Buffer for writing and reading a message
                 std::array<char, MAX_BUFFER_SIZE> buffer_;
 
-                std::set<std::shared_ptr<Session>>& clients_;
-                std::mutex& clients_mtx_;
-                boost::asio::thread_pool& tpool_;
+                Server& pserver_;
 
                 /**
                  * @brief Broadcast message to all clients
                  */
-                void broadcast(void);
+                void broadcast(std::string msg);
 
                 /**
                  * @brief Read a message from client
