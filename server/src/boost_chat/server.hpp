@@ -6,8 +6,10 @@
 
 #include <boost/asio.hpp>
 
+#include <memory>
 #include <mutex>
 #include <set>
+#include <string>
 
 using boost::asio::ip::tcp;
 
@@ -17,6 +19,16 @@ namespace boost_chat
         {
         public:
                 Server(boost::asio::io_context& context, unsigned short port, boost::asio::thread_pool& tpool);
+
+                /**
+                 * @brief Erase session from clients_
+                 */
+                void close_session(std::shared_ptr<Session> session);
+
+                /**
+                 * @brief Broadcast message to all clients
+                 */
+                void broadcast(std::string&& msg);
         private:
                 tcp::acceptor acceptor_;
 
@@ -27,7 +39,7 @@ namespace boost_chat
                 boost::asio::thread_pool& tpool_;
 
                 /**
-                 * @brief Accept a client asynchronously
+                 * @brief Accept a client asynchronously and insert session to clients_
                  */
                 void accept(void);
         };

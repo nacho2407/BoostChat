@@ -4,13 +4,29 @@
 
 #include <boost/system.hpp>
 
-#include <memory>
 #include <utility>
 
 boost_chat::Server::Server(boost::asio::io_context& context, unsigned short port, boost::asio::thread_pool& tpool)
         : acceptor_(context, tcp::endpoint(tcp::v4(), port)), tpool_(tpool)
 {
         accept();
+}
+
+void boost_chat::Server::close_session(std::shared_ptr<Session> session)
+{
+        std::lock_guard<std::mutex> lk(clients_mtx_);
+        
+        clients_.erase(session);
+}
+
+void boost_chat::Server::broadcast(std::string&& msg)
+{
+        std::string msg_ = std::move(msg);
+
+        std::lock_guard<std::mutex> lk(clients_mtx_);
+
+        for(auto& c: clients_)
+                c->send(msg_);
 }
 
 void boost_chat::Server::accept(void)
@@ -21,7 +37,8 @@ void boost_chat::Server::accept(void)
                 if(!ec) {
                         logger.conn(socket);
 
-                        auto session = std::make_shared<Session>(std::move(socket), clients_, clients_mtx_, tpool_);
+                        std::lock_guard<std::mutex> lk(clients_mtx_);
+                        clients_.insert(std::make_shared<Session>(std::move(socket), *this));
                 }
                 else
                         logger.error(socket, "Client connecting error");

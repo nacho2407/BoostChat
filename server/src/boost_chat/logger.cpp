@@ -54,7 +54,7 @@ void boost_chat::Logger::info(std::string_view msg)
 {
         std::stringstream ss;
 
-        ss << "[ Info\t] " << get_time() << " - " << msg << std::endl;
+        ss << "[ Info\t] " << get_time() << " - " << msg << "\n";
 
         std::lock_guard<std::mutex> lk(logger_mtx_);
 
@@ -66,7 +66,7 @@ void boost_chat::Logger::info(tcp::socket& remote_sck, std::string_view msg)
         std::stringstream ss;
 
         ss << "[ Info\t] " << get_time() << " - "
-                << msg << ": " << remote_sck.remote_endpoint().address().to_string() << std::endl;
+                << msg << ": " << remote_sck.remote_endpoint().address().to_string() << "\n";
 
         std::lock_guard<std::mutex> lk(logger_mtx_);
 

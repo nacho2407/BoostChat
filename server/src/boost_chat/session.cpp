@@ -2,44 +2,29 @@
 
 #include "logger.hpp"
 
+#include <boost/system.hpp>
+
 #include <cstddef>
 #include <utility>
-
-/**
- * - clients_에 Session 넣고 빼는 기능을 Server로 옮기기
- * 
- * - broadcast를 Server로 옮기기
- * 
- * - 람다 함수 캡처 시 this보다 self 활용하기
- */
 
 boost_chat::Session::Session(tcp::socket&& socket, Server& pserver)
         : socket_(std::move(socket)), pserver_(pserver)
 {
-        std::unique_lock<std::mutex> lk(pserver_.clients_mtx_);
-        clients_.insert(shared_from_this());
-        
-        lk.unlock();
-
-        socket_.async_read_some(boost::asio::buffer(buffer_, MAX_BUFFER_SIZE), [this](boost::system::error_code ec, std::size_t length) {
+        auto self(shared_from_this());
+        socket_.async_read_some(boost::asio::buffer(buffer_, MAX_BUFFER_SIZE), [self](boost::system::error_code ec, std::size_t length) {
                 static Logger& logger = Logger::get_instance();
 
-                logger.conn(socket_);
+                logger.conn(self->socket_);
 
                 if(!ec) {
-                        // Configure client's id
-                        cid_ = std::string(buffer_.data(), length);
+                        self->cid_ = std::string(self->buffer_.data(), length);
 
-                        // Start reading
-                        read();
+                        self->read();
                 }
                 else {
-                        logger.error(socket_, "Client configuration error");
+                        logger.error(self->socket_, "Client configuration error");
 
-                        std::unique_lock<std::mutex> lk(clients_mtx_);
-                        clients_.erase(shared_from_this());
-
-                        lk.unlock();
+                        self->pserver_.close_session(self);
                 }
         });
 }
@@ -51,44 +36,42 @@ boost_chat::Session::~Session()
         socket_.close();
 }
 
-void boost_chat::Session::broadcast(std::string msg)
+void boost_chat::Session::send(std::string msg)
 {
-        std::unique_lock<std::mutex> lk(clients_mtx_);
-        for(auto cp: clients_) {
-                boost::asio::post(tpool_, [cp, msg](void) {
-                        auto self(cp);
-                        cp->socket_.async_send(boost::asio::buffer(msg), [self](boost::system::error_code ec, std::size_t length) {
-                                if(ec)
-                                        boost_chat::Logger::get_instance().error(self->socket_, "Client's message sending error");
-                        });
-                });
-        }
+        auto self(shared_from_this());
+        socket_.async_send(boost::asio::buffer(msg), [self](boost::system::error_code ec, std::size_t length) {
+                static Logger& logger = Logger::get_instance();
+                
+                if(ec) {
+                        if(ec == boost::asio::error::eof)
+                                logger.info(self->socket_, "Client exits connection");
+                        else
+                                logger.error(self->socket_, "Broadcasting message sending error");
 
-        lk.unlock();
+                        self->pserver_.close_session(self);
+                }
+        });
 }
 
 void boost_chat::Session::read(void)
 {
         auto self(shared_from_this());
-        socket_.async_read_some(boost::asio::buffer(buffer_, MAX_BUFFER_SIZE), [this, self](boost::system::error_code ec, std::size_t length) {
+        socket_.async_read_some(boost::asio::buffer(buffer_, MAX_BUFFER_SIZE), [self](boost::system::error_code ec, std::size_t length) {
                 static Logger& logger = Logger::get_instance();
 
                 if(!ec) {
-                        logger.info(socket_, "Client sends message");
+                        logger.info(self->socket_, "Client sends message");
 
                         // Broadcast clients message to all clients
-                        broadcast(buffer_.data());
+                        self->pserver_.broadcast(self->buffer_.data());
                 }
                 else {
                         if(ec == boost::asio::error::eof)
-                                logger.info(socket_, "Client exits connection");
+                                logger.info(self->socket_, "Client exits connection");
                         else
-                                logger.error(socket_, "Client's message reading error");
+                                logger.error(self->socket_, "Client's message reading error");
 
-                        std::unique_lock<std::mutex> lk(clients_mtx_);
-                        clients_.erase(shared_from_this());
-
-                        lk.unlock();
+                        self->pserver_.close_session(self);
                 }
         });
 }

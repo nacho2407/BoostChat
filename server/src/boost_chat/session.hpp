@@ -20,6 +20,11 @@ namespace boost_chat
                 Session(tcp::socket&& socket, Server& pserver);
 
                 ~Session();
+
+                /**
+                 * @brief Send a message to client
+                 */
+                void send(std::string msg);
         private:
                 tcp::socket socket_;
                 std::string cid_;
@@ -28,11 +33,6 @@ namespace boost_chat
                 std::array<char, MAX_BUFFER_SIZE> buffer_;
 
                 Server& pserver_;
-
-                /**
-                 * @brief Broadcast message to all clients
-                 */
-                void broadcast(std::string msg);
 
                 /**
                  * @brief Read a message from client

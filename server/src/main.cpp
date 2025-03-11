@@ -1,20 +1,22 @@
-#include "boost_chat/tester.hpp"
+#include "boost_chat/server.hpp"
+
+#include <boost/asio.hpp>
+
+#include <iostream>
 
 /**
- * @brief Test modules
+ * @brief Start to accept client
  */
-static int test(void);
+static int run_server(void);
 
 int main(void)
 {
-        test();
+        run_server();
 
         return 0;
 }
 
-static int test(void)
+static int run_server(void)
 {
-        static boost_chat::Tester& tester = boost_chat::Tester::get_instance();
-
-        return tester.logger_test();
+        return 0;
 }
