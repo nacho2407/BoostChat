@@ -1,0 +1,40 @@
+#define BOOST_CHAT_DEFAULT_PORT 54321
+
+#include "server.hpp"
+
+#include <boost/asio.hpp>
+
+#include <iostream>
+
+/**
+ * @brief Start to accept client
+ */
+static int run_server(const unsigned short& port);
+
+int main(int argc, char* argv[])
+{
+        unsigned short port = BOOST_CHAT_DEFAULT_PORT;
+
+        if(argc > 2) {
+                std::cerr << "Usage: boost_chat_server [port=" << BOOST_CHAT_DEFAULT_PORT << "]\n";
+
+                exit(1);
+        }
+        else if(argc == 2)
+                port = atoi(argv[1]);
+        
+        run_server(port);
+
+        return 0;
+}
+
+static int run_server(const unsigned short& port)
+{
+        boost::asio::io_context context;
+
+        boost_chat::Server server(context, port);
+
+        context.run();
+        
+        return 0;
+}
