@@ -1,5 +1,5 @@
 {
-        "name": "BoostChat",
+        "name": "boost-chat",
         "version": "0.1.0",
         "dependencies": [
                 "boost-asio",

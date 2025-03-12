@@ -1,4 +1,6 @@
 .vscode
+bin
+build
 
 *.dll
 *.exe
