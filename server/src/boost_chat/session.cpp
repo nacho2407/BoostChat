@@ -19,6 +19,7 @@ boost_chat::Session::Session(tcp::socket&& socket, Server& pserver)
                 logger.conn(self->socket_);
 
                 if(!ec) {
+                        // Configure clients id
                         self->cid_ = std::string(self->buffer_.data(), length);
 
                         self->read();
@@ -40,9 +41,12 @@ boost_chat::Session::~Session()
 
 void boost_chat::Session::send(Message msg)
 {
+        Message msg_ = std::move(msg);
+
+        // Serialize Message
         std::ostringstream oss;
         boost::archive::binary_oarchive bo(oss);
-        bo << msg;
+        bo << msg_;
 
         auto self(shared_from_this());
         socket_.async_send(boost::asio::buffer(oss.str()), [self](boost::system::error_code ec, std::size_t length) {
@@ -50,7 +54,7 @@ void boost_chat::Session::send(Message msg)
                 
                 if(ec) {
                         if(ec == boost::asio::error::eof)
-                                logger.info(self->socket_, "Client's disconnected while send message");
+                                logger.info(self->socket_, "Client's disconnected while sending a message.");
                         else
                                 logger.error(self->socket_, "Message sending error");
 
@@ -73,7 +77,7 @@ void boost_chat::Session::read(void)
                 }
                 else {
                         if(ec == boost::asio::error::eof)
-                                logger.info(self->socket_, "Client's disconnected while read message");
+                                logger.info(self->socket_, "Client's disconnected while reading a message.");
                         else
                                 logger.error(self->socket_, "Clients message reading error");
 

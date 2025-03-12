@@ -18,5 +18,11 @@ int main(void)
 
 static int run_server(void)
 {
+        std::cout << "Configure port number >> " << std::flush;
+
+        // Under construction
+
+        // boost::asio::io_context context;
+        
         return 0;
 }

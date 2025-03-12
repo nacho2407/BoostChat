@@ -6,5 +6,4 @@ void boost_chat::Message::serialize(Archive& ar, const unsigned int version)
         ar & cid_;
         ar & msg_;
         ar & time_;
-        ar & version_;
 }

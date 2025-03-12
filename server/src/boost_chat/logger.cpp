@@ -15,7 +15,7 @@ boost_chat::Logger& boost_chat::Logger::get_instance(void)
         return instance_;
 }
 
-void boost_chat::Logger::conn(tcp::socket& remote_sck)
+void boost_chat::Logger::conn(const tcp::socket& remote_sck)
 {
         std::stringstream ss;
 
@@ -38,7 +38,7 @@ void boost_chat::Logger::error(std::string_view msg)
         std::cerr << ss.str();
 }
 
-void boost_chat::Logger::error(tcp::socket& remote_sck, std::string_view msg)
+void boost_chat::Logger::error(const tcp::socket& remote_sck, std::string_view msg)
 {
         std::stringstream ss;
 
@@ -48,6 +48,16 @@ void boost_chat::Logger::error(tcp::socket& remote_sck, std::string_view msg)
         std::lock_guard<std::mutex> lk(logger_mtx_);
 
         std::cerr << ss.str();
+}
+
+std::string boost_chat::Logger::get_time(void) const
+{
+        std::stringstream ss;
+
+        std::time_t now = system_clock::to_time_t(system_clock::now());
+        ss << std::put_time(std::localtime(&now), "%Y/%m/%d/%H:%M:%S");
+
+        return ss.str();
 }
 
 void boost_chat::Logger::info(std::string_view msg)
@@ -61,7 +71,7 @@ void boost_chat::Logger::info(std::string_view msg)
         std::cout << ss.str() << std::flush;
 }
 
-void boost_chat::Logger::info(tcp::socket& remote_sck, std::string_view msg)
+void boost_chat::Logger::info(const tcp::socket& remote_sck, std::string_view msg)
 {
         std::stringstream ss;
 
@@ -71,14 +81,4 @@ void boost_chat::Logger::info(tcp::socket& remote_sck, std::string_view msg)
         std::lock_guard<std::mutex> lk(logger_mtx_);
 
         std::cout << ss.str() << std::flush;
-}
-
-std::string boost_chat::Logger::get_time(void)
-{
-        std::stringstream ss;
-
-        std::time_t now = system_clock::to_time_t(system_clock::now());
-        ss << std::put_time(std::localtime(&now), "%Y/%m/%d/%H:%M:%S");
-
-        return ss.str();
 }

@@ -18,12 +18,16 @@ namespace boost_chat
         class Server
         {
         public:
-                Server(boost::asio::io_context& context, unsigned short port, boost::asio::thread_pool& tpool);
+                Server() = delete;
+                Server(const Server&) = delete;
+                Server(Server&&) = default;
+
+                Server(boost::asio::io_context& context, const unsigned short port);
 
                 /**
                  * @brief Erase session from clients_
                  */
-                void close_session(std::shared_ptr<Session> session);
+                void close_session(const std::shared_ptr<Session>& session);
 
                 /**
                  * @brief Broadcast message to all clients
@@ -35,8 +39,6 @@ namespace boost_chat
                 // Critical Section
                 std::set<std::shared_ptr<Session>> clients_;
                 std::mutex clients_mtx_;
-                
-                boost::asio::thread_pool& tpool_;
 
                 /**
                  * @brief Accept a client asynchronously and insert session to clients_

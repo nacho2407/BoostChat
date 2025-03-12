@@ -18,6 +18,10 @@ namespace boost_chat
         class Session: public std::enable_shared_from_this<Session>
         {
         public:
+                Session() = delete;
+                Session(const Session&) = delete;
+                Session(Session&&) = default;
+
                 Session(tcp::socket&& socket, Server& pserver);
 
                 ~Session();

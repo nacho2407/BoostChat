@@ -4,15 +4,18 @@
 
 #include <boost/system.hpp>
 
+#include <iostream>
 #include <utility>
 
-boost_chat::Server::Server(boost::asio::io_context& context, unsigned short port, boost::asio::thread_pool& tpool)
-        : acceptor_(context, tcp::endpoint(tcp::v4(), port)), tpool_(tpool)
+boost_chat::Server::Server(boost::asio::io_context& context, const unsigned short port)
+        : acceptor_(context, tcp::endpoint(tcp::v4(), port))
 {
+        std::cout << "Server started at port " << port << "." << std::endl;
+        
         accept();
 }
 
-void boost_chat::Server::close_session(std::shared_ptr<Session> session)
+void boost_chat::Server::close_session(const std::shared_ptr<Session>& session)
 {
         std::lock_guard<std::mutex> lk(clients_mtx_);
         
@@ -25,11 +28,8 @@ void boost_chat::Server::broadcast(Message&& msg)
 
         std::lock_guard<std::mutex> lk(clients_mtx_);
 
-        for(auto& c: clients_) {
-                boost::asio::post(tpool_, [&c, msg_]() {
-                        c->send(msg_);
-                });
-        }
+        for(auto& c: clients_)
+                c->send(msg_);
 }
 
 void boost_chat::Server::accept(void)

@@ -13,16 +13,25 @@ using boost::asio::ip::tcp;
 
 namespace boost_chat
 {
+        // Implemented as a singleton pattern
         class Logger
         {
         public:
-                // Implemented as a singleton pattern
+                Logger(const Logger&) = delete;
+                Logger(Logger&&) = delete;
+
+                Logger& operator =(const Logger&) = delete;
+                Logger& operator =(Logger&&) = delete;
+
+                /**
+                 * @brief Return instance of Logger
+                 */
                 static Logger& get_instance(void);
 
                 /**
                  * @brief Print a connection message;
                  */
-                void conn(tcp::socket& remote_sck);
+                void conn(const tcp::socket& remote_sck);
 
                 /**
                  * @brief Print a plain error message
@@ -32,12 +41,12 @@ namespace boost_chat
                 /**
                  * @brief Print an error message with client's information
                  */
-                void error(tcp::socket& remote_sck, std::string_view msg);
+                void error(const tcp::socket& remote_sck, std::string_view msg);
 
                 /**
                  * @brief Get local time
                  */
-                std::string get_time(void);
+                std::string get_time(void) const;
 
                 /**
                  * @brief Print a plain log message
@@ -47,13 +56,7 @@ namespace boost_chat
                 /**
                  * @brief Print a log message with client's information
                  */
-                void info(tcp::socket& remote_sck, std::string_view msg);
-
-                // Deleted on purpose
-                Logger(const Logger&) = delete;
-                Logger(Logger&&) = delete;
-                Logger& operator =(const Logger&) = delete;
-                Logger& operator =(Logger&&) = delete;
+                void info(const tcp::socket& remote_sck, std::string_view msg);
         private:
                 Logger() = default;
 
