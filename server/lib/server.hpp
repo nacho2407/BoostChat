@@ -15,12 +15,15 @@ using boost::asio::ip::tcp;
 
 namespace boost_chat
 {
+        // Forward declaration
+        class Session;
+
         class Server
         {
         public:
                 Server() = delete;
                 Server(const Server&) = delete;
-                Server(Server&&) = default;
+                Server(Server&&) = delete;
 
                 Server(boost::asio::io_context& context, const unsigned short port);
 

@@ -15,6 +15,9 @@ using boost::asio::ip::tcp;
 
 namespace boost_chat
 {
+        // Forward declaration
+        class Server;
+        
         class Session: public std::enable_shared_from_this<Session>
         {
         public:

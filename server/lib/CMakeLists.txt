@@ -1,13 +1,9 @@
 add_library(logger SHARED logger.cpp)
 add_library(message SHARED message.cpp)
-add_library(server SHARED server.cpp)
-add_library(session SHARED session.cpp)
+add_library(server SHARED server.cpp session.cpp)
 
-find_package(boost-asio REQUIRED)
-find_package(boost-serialization REQUIRED)
-find_package(boost-system REQUIRED)
+find_package(Boost REQUIRED COMPONENTS asio serialization system)
 
-target_link_libraries(logger PUBLIC boost-asio)
-target_link_libraries(message PUBLIC boost-serialization)
-target_link_libraries(server PUBLIC message session boost-asio logger boost-system)
-target_link_libraries(session PUBLIC message server boost-asio logger boost-serialization boost-system)
+target_link_libraries(logger PUBLIC Boost::asio)
+target_link_libraries(message PUBLIC Boost::serialization)
+target_link_libraries(server PUBLIC message Boost::asio logger Boost::system Boost::serialization)
