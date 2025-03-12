@@ -19,14 +19,17 @@ void boost_chat::Server::close_session(std::shared_ptr<Session> session)
         clients_.erase(session);
 }
 
-void boost_chat::Server::broadcast(std::string&& msg)
+void boost_chat::Server::broadcast(Message&& msg)
 {
-        std::string msg_ = std::move(msg);
+        Message msg_ = std::move(msg);
 
         std::lock_guard<std::mutex> lk(clients_mtx_);
 
-        for(auto& c: clients_)
-                c->send(msg_);
+        for(auto& c: clients_) {
+                boost::asio::post(tpool_, [&c, msg_]() {
+                        c->send(msg_);
+                });
+        }
 }
 
 void boost_chat::Server::accept(void)

@@ -2,6 +2,7 @@
 #define BOOST_CHAT_SERVER_HPP
 
 #include "def.hpp"
+#include "message.hpp"
 #include "session.hpp"
 
 #include <boost/asio.hpp>
@@ -9,7 +10,6 @@
 #include <memory>
 #include <mutex>
 #include <set>
-#include <string>
 
 using boost::asio::ip::tcp;
 
@@ -28,7 +28,7 @@ namespace boost_chat
                 /**
                  * @brief Broadcast message to all clients
                  */
-                void broadcast(std::string&& msg);
+                void broadcast(Message&& msg);
         private:
                 tcp::acceptor acceptor_;
 

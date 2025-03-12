@@ -35,6 +35,11 @@ namespace boost_chat
                 void error(tcp::socket& remote_sck, std::string_view msg);
 
                 /**
+                 * @brief Get local time
+                 */
+                std::string get_time(void);
+
+                /**
                  * @brief Print a plain log message
                  */
                 void info(std::string_view msg);
@@ -53,11 +58,6 @@ namespace boost_chat
                 Logger() = default;
 
                 std::mutex logger_mtx_;
-
-                /**
-                 * @brief Get local time
-                 */
-                std::string get_time(void);
         };
 }
 #endif

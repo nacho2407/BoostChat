@@ -2,6 +2,7 @@
 #define BOOST_CHAT_SESSION_HPP
 
 #include "def.hpp"
+#include "message.hpp"
 #include "server.hpp"
 
 #include <boost/asio.hpp>
@@ -24,7 +25,7 @@ namespace boost_chat
                 /**
                  * @brief Send a message to client
                  */
-                void send(std::string msg);
+                void send(Message msg);
         private:
                 tcp::socket socket_;
                 std::string cid_;
