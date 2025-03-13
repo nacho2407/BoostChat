@@ -22,8 +22,16 @@ namespace boost_chat
                 std::string msg_;
                 std::string time_;
 
+                /**
+                 * @brief Serialize Message instance
+                 */
                 template<class Archive>
-                void serialize(Archive& ar, const unsigned int version);
+                void serialize(Archive& ar, const unsigned int version)
+                {
+                        ar & cid_;
+                        ar & msg_;
+                        ar & time_;
+                }
         };
 }
 #endif
