@@ -9,8 +9,3 @@ project(
 set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(server)
-
-install(
-        TARGETS BoostChat_server bc_logger bc_server
-        DESTINATION ${CMAKE_SOURCE_DIR}/bin
-)
