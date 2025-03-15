@@ -24,7 +24,7 @@ add_subdirectory(server)
 
 install(
         TARGETS bc_logger bc_server BoostChat_server
-        RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/bin
-        LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}/bin
-        ARCHIVE DESTINATION ${CMAKE_SOURCE_DIR}/lib
+        RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/server/bin
+        LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}/server/bin
+        ARCHIVE DESTINATION ${CMAKE_SOURCE_DIR}/server/lib
 )
