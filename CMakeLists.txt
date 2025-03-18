@@ -15,7 +15,7 @@ endif()
 set(BOOST_INCLUDE_DIR ${BOOST_ROOT})
 
 if(NOT DEFINED BOOST_LIBRARY_DIR)
-        set(BOOST_LIBRARY_DIR ${BOOST_ROOT}/stage/lib)
+        set(BOOST_LIBRARY_DIR "${BOOST_ROOT}/stage/lib")
 endif()
 
 set(CMAKE_INSTALL_RPATH "$ORIGIN;${BOOST_LIBRARY_DIR}")
