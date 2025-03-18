@@ -19,3 +19,8 @@ find_library(
 )
 
 target_link_libraries(bc_server PUBLIC bc_logger ${BOOST_SERIALIZATION} ${BOOST_SYSTEM})
+
+if(DEFINED COMPILE_OPTIONS)
+        target_compile_options(bc_server PUBLIC ${COMPILE_OPTIONS})
+        target_compile_options(bc_logger PUBLIC ${COMPILE_OPTIONS})
+endif()

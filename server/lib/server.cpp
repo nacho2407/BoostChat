@@ -10,7 +10,9 @@
 boost_chat::Server::Server(boost::asio::io_context& context, const unsigned short port)
         : acceptor_(context, tcp::endpoint(tcp::v4(), port))
 {
-        std::cout << "Server started at port " << port << "." << std::endl;
+        std::cout << "--------------------------------\n"
+                << "Server started at port " << port << ".\n"
+                << "--------------------------------" << std::endl;
         
         accept();
 }

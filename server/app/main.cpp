@@ -1,4 +1,5 @@
-#define BOOST_CHAT_DEFAULT_PORT 54321
+#define BOOST_CHAT_DEFAULT_PORT 24072
+#define BOOST_CHAT_VERSION "0.1.0"
 
 #include "server.hpp"
 
@@ -16,12 +17,20 @@ int main(int argc, char* argv[])
         unsigned short port = BOOST_CHAT_DEFAULT_PORT;
 
         if(argc > 2) {
-                std::cerr << "Usage: boost_chat_server [port=" << BOOST_CHAT_DEFAULT_PORT << "]\n";
+                std::cerr << "Usage: BoostChat-server [port=" << BOOST_CHAT_DEFAULT_PORT << "]\n";
 
                 exit(1);
         }
         else if(argc == 2)
                 port = atoi(argv[1]);
+
+        std::cout << "================================\n\n"
+        
+        << "\tBoostChat-server\n\n"
+
+        << "\tver. " << BOOST_CHAT_VERSION << "\n\n"
+
+        << "================================" << std::endl;
         
         run_server(port);
 
