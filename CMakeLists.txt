@@ -6,7 +6,7 @@ project(
         LANGUAGES CXX
 )
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 if(NOT DEFINED BOOST_ROOT)
         message(FATAL_ERROR "Boost C++ Libraries directory's not defined!\nPlease define Boost directory: -DBOOST_ROOT=<absolute path to Boost>")

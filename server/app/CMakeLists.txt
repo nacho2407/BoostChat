@@ -10,5 +10,5 @@ endif()
 
 install(
         TARGETS BoostChat-server
-        RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/server/bin
+        RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/bin/server
 )
