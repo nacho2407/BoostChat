@@ -10,5 +10,5 @@ endif()
 
 install(
         TARGETS BoostChat-server
-        RUNTIME DESTINATION ${BC_INSTALL_PATH}
+        RUNTIME DESTINATION ${BC_SERVER_INSTALL_PATH}
 )
