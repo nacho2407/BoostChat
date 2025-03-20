@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.14)
+cmake_minimum_required(VERSION 3.25)
 
 project(
         BoostChat
@@ -7,17 +7,18 @@ project(
 )
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_INSTALL_RPATH "$ORIGIN")
 
-if(NOT DEFINED BOOST_ROOT)
-        message(FATAL_ERROR "Boost C++ Libraries directory's not defined!\nPlease define Boost directory: -DBOOST_ROOT=<absolute path to Boost>")
-endif()
+set(BC_INSTALL_PATH "${CMAKE_SOURCE_DIR}/bin/server")
 
-set(BOOST_INCLUDE_DIR ${BOOST_ROOT})
+find_package(Boost REQUIRED COMPONENTS serialization system)
 
-if(NOT DEFINED BOOST_LIBRARY_DIR)
-        set(BOOST_LIBRARY_DIR "${BOOST_ROOT}/stage/lib")
-endif()
+file(GLOB BC_BOOST_SERIALIZATION "${Boost_LIBRARY_DIRS}/*boost_serialization*")
+file(GLOB BC_BOOST_SYSTEM "${Boost_LIBRARY_DIRS}/*boost_system*")
 
-set(CMAKE_INSTALL_RPATH "$ORIGIN;${BOOST_LIBRARY_DIR}")
+install(
+        FILES ${BC_BOOST_SERIALIZATION} ${BC_BOOST_SYSTEM}
+        DESTINATION ${BC_INSTALL_PATH}
+)
 
 add_subdirectory(server)

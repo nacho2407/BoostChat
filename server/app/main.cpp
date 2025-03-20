@@ -1,7 +1,7 @@
 #define BOOST_CHAT_DEFAULT_PORT 24072
-#define BOOST_CHAT_VERSION "0.1.0"
+#define BOOST_CHAT_VERSION "build"
 
-#include "server.hpp"
+#include "../lib/server.hpp"
 
 #include <boost/asio.hpp>
 
