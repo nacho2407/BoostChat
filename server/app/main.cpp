@@ -1,5 +1,5 @@
 #define BOOST_CHAT_DEFAULT_PORT 24072
-#define BOOST_CHAT_VERSION "build"
+#define BOOST_CHAT_SERVER_VERSION "build"
 
 #include "../lib/server.hpp"
 
@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
         
         << "\tBoostChat-server\n\n"
 
-        << "\tver. " << BOOST_CHAT_VERSION << "\n\n"
+        << "\tver. " << BOOST_CHAT_SERVER_VERSION << "\n\n"
 
         << "================================" << std::endl;
         
