@@ -11,10 +11,6 @@ namespace boost_chat
         class Message
         {
         public:
-                Message() = default;
-                Message(const Message&) = default;
-                Message(Message&&) = default;
-
                 Message(std::string cid, std::string&& msg, std::string&& time)
                         : cid_(cid), msg_(std::move(msg)), time_(std::move(time)) {}
 

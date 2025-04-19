@@ -17,12 +17,6 @@ namespace boost_chat
         class Logger
         {
         public:
-                Logger(const Logger&) = delete;
-                Logger(Logger&&) = delete;
-
-                Logger& operator =(const Logger&) = delete;
-                Logger& operator =(Logger&&) = delete;
-
                 /**
                  * @brief Return instance of Logger
                  */
@@ -58,9 +52,15 @@ namespace boost_chat
                  */
                 void info(const tcp::socket& remote_sck, std::string_view msg);
         private:
-                Logger() = default;
-
                 std::mutex logger_mtx_;
+
+                Logger() = default;
+                ~Logger() = default;
+
+                Logger(const Logger&) = delete;
+                Logger& operator =(const Logger&) = delete;
+                Logger(Logger&&) = delete;
+                Logger& operator =(Logger&&) = delete;
         };
 }
 #endif

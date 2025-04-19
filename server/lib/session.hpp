@@ -21,10 +21,6 @@ namespace boost_chat
         class Session: public std::enable_shared_from_this<Session>
         {
         public:
-                Session() = delete;
-                Session(const Session&) = delete;
-                Session(Session&&) = default;
-
                 Session(tcp::socket&& socket, Server& pserver);
 
                 ~Session();
@@ -34,6 +30,12 @@ namespace boost_chat
                  */
                 void send(Message msg);
         private:
+                Session() = delete;
+                Session(const Session&) = delete;
+                Session& operator =(const Session&) = delete;
+                Session(Session&&) = delete;
+                Session& operator =(Session&&) = delete;
+
                 tcp::socket socket_;
                 std::string cid_;
 

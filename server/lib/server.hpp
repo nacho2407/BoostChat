@@ -21,9 +21,7 @@ namespace boost_chat
         class Server
         {
         public:
-                Server() = delete;
-                Server(const Server&) = delete;
-                Server(Server&&) = delete;
+                ~Server() = default;
 
                 Server(boost::asio::io_context& context, const unsigned short port);
 
@@ -37,6 +35,12 @@ namespace boost_chat
                  */
                 void broadcast(Message&& msg);
         private:
+                Server() = delete;
+                Server(const Server&) = delete;
+                Server& operator =(const Server&) = delete;
+                Server(Server&&) = delete
+                Server& operator =(Server&&) = delete;
+
                 tcp::acceptor acceptor_;
 
                 // Critical Section
