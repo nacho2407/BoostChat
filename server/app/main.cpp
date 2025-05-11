@@ -6,6 +6,7 @@
 #include <boost/asio.hpp>
 
 #include <iostream>
+#include <stdlib.h>
 
 /**
  * @brief Start to accept client
