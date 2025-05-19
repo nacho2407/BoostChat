@@ -1,5 +1,6 @@
-#define BOOST_CHAT_DEFAULT_PORT 24072
 #define BOOST_CHAT_SERVER_VERSION "build"
+
+#define BOOST_CHAT_DEFAULT_PORT 24072
 
 #include "../lib/server.hpp"
 
