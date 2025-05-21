@@ -39,9 +39,9 @@ boost_chat::Session::~Session()
         socket_.close();
 }
 
-void boost_chat::Session::send(Message msg)
+void boost_chat::Session::send(boost_chat::Message msg)
 {
-        Message msg_ = std::move(msg);
+        boost_chat::Message msg_ = std::move(msg);
 
         // Serialize Message
         std::ostringstream oss;
@@ -73,7 +73,7 @@ void boost_chat::Session::read(void)
                         logger.info(self->socket_, "Client sends message");
 
                         // Broadcast clients message to all clients
-                        self->pserver_.broadcast(Message(self->cid_, self->buffer_.data(), logger.get_time()));
+                        self->pserver_.broadcast(boost_chat::Message(self->cid_, self->buffer_.data(), logger.get_time()));
                 }
                 else {
                         if(ec == boost::asio::error::eof)
@@ -83,5 +83,7 @@ void boost_chat::Session::read(void)
 
                         self->pserver_.close_session(self);
                 }
+
+                self->read();
         });
 }

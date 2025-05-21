@@ -3,6 +3,6 @@
 
 namespace boost_chat
 {
-        constexpr unsigned int MAX_BUFFER_SIZE = 1024;
+        constexpr unsigned int MAX_BUFFER_SIZE = 2048;
 }
 #endif

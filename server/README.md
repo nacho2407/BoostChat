@@ -1,11 +1,11 @@
 # BoostChat-server
 
-BoostChat의 서버 프로그램입니다. `boost_chat::Server`에서 새로운 클라이언트를 받아 새로운 `boost_chat::Session`에 할당시켜 처리합니다. 클라이언트와는 `boost_chat::Message` 형식으로 통신하며, 통신의 모든 내용은 `boost_chat::Logger`를 통해 서버에 기록됩니다.
+BoostChat의 서버 프로그램입니다. `boost_chat::Server`에서 새로운 클라이언트를 받아 새로운 `boost_chat::Session`에 할당시켜 처리합니다. 클라이언트와는 `boost_chat::Message` 형식으로 통신하며, 통신의 주요 이벤트들은 `boost_chat::Logger`를 통해 서버에 기록됩니다.
 
 
-## app/main
+## main
 
-BoostChat-server의 진입점으로, 서버를 실행할 포트를 설정하고, `boost_chat::Server` 인스턴스를 생성하여 비동기 이벤트 루프를 실행합니다.
+BoostChat-server의 메인 프로그램으로, 서버를 실행할 포트를 설정하고, `boost_chat::Server` 인스턴스를 생성하여 비동기 이벤트 루프를 실행합니다.
 
 
 ### 구성 파일
@@ -57,3 +57,6 @@ BoostChat-server의 진입점으로, 서버를 실행할 포트를 설정하고,
 ### 의존 라이브러리
 
 - [Boost.Asio](https://www.boost.org/library/latest/asio/)
+
+
+*추가 예정*
