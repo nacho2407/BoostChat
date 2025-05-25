@@ -13,7 +13,7 @@ namespace boost_chat
         {
         public:
                 Message() = default;
-                Message(std::string cid, std::string&& msg, std::string&& time)
+                Message(cosnt std::string& cid, std::string&& msg, std::string&& time)
                         : cid_(cid), msg_(std::move(msg)), time_(std::move(time)) {}
 
                 std::string cid_;
