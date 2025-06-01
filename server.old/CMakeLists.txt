@@ -1,3 +1,5 @@
+set(BC_SERVER_INSTALL_PATH "${CMAKE_SOURCE_DIR}/bin/server")
+
 find_package(Boost REQUIRED COMPONENTS serialization system)
 
 if(DEFINED BC_BOOST_SHARED)
