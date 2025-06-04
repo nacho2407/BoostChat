@@ -8,7 +8,8 @@ project(
 
 set(CMAKE_CXX_STANDARD 20)
 
-set(BOOST_CHAT_INSTALL_PATH ${CMAKE_SOURCE_DIR}/bin)
-set(BOOST_DIR ${CMAKE_SOURCE_DIR}/external/boost)
+set(BOOST_CHAT_INSTALL ${CMAKE_SOURCE_DIR}/bin)
+set(BOOST_CHAT_SHARED ${CMAKE_SOURCE_DIR}/shared)
+set(BOOST_LIBS ${CMAKE_SOURCE_DIR}/external/boost)
 
 add_subdirectory(server)

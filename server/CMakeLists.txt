@@ -1,44 +1,28 @@
-set(BOOST_CHAT_SERVER_INSTALL_PATH ${BOOST_CHAT_INSTALL_PATH}/server)
+set(BOOST_CHAT_SERVER_INSTALL ${BOOST_CHAT_INSTALL}/server)
 
-set(BOOST_INCLUDE_DIR ${BOOST_DIR}/include)
+set(BOOST_LIBS_INCLUDE ${BOOST_LIBS}/include)
 
-find_library(BOOST_SYSTEM_LIB boost_system PATHS ${BOOST_DIR}/lib)
-find_library(BOOST_SERIALIZATION_LIB boost_serialization PATHS ${BOOST_DIR}/lib)
+find_library(BOOST_SYSTEM boost_system PATHS ${BOOST_LIBS}/lib)
+find_library(BOOST_SERIALIZATION boost_serialization PATHS ${BOOST_LIBS}/lib)
 
 set(CMAKE_INSTALL_RPATH "$ORIGIN/lib")
 
-###
-
 add_executable(boost-chat-server logger.cpp main.cpp server.cpp session.cpp)
 
-target_include_directories(boost-chat-server PUBLIC ${BOOST_INCLUDE_DIR})
-target_link_libraries(boost-chat-server PUBLIC BOOST_SYSTEM_LIB BOOST_SERIALIZATION_LIB)
-
-# 요기 아래부터 재작성(위의 것도 순서 조정 필요)
-
-if(DEFINED BC_COMPILE_OPTIONS)
-        target_compile_options(BoostChat-server PRIVATE ${BC_COMPILE_OPTIONS})
-endif()
+target_include_directories(boost-chat-server PUBLIC ${BOOST_LIBS_INCLUDE})
+target_link_libraries(boost-chat-server PUBLIC ${BOOST_SYSTEM} ${BOOST_SERIALIZATION})
 
 install(
-        TARGETS BoostChat-server
-        RUNTIME DESTINATION ${BC_SERVER_INSTALL_PATH}
+        TARGETS boost-chat-server
+        RUNTIME DESTINATION ${BOOST_CHAT_SERVER_INSTALL}
 )
 
-###
+# TODO
 
-add_library(bc_logger STATIC logger.cpp)
+# (상수 이름 신경쓰기)
 
-target_include_directories(bc_logger PUBLIC ${Boost_INCLUDE_DIR})
+# 1. shared 연결하기
 
-add_library(bc_server STATIC server.cpp session.cpp)
+# 2. boost libraries install하기
 
-target_include_directories(bc_server PUBLIC ${Boost_INCLUDE_DIR})
-
-target_link_libraries(bc_server PUBLIC bc_logger Boost::serialization Boost::system)
-
-if(DEFINED BC_COMPILE_OPTIONS)
-        target_compile_options(bc_server PUBLIC ${BC_COMPILE_OPTIONS})
-        target_compile_options(bc_logger PUBLIC ${BC_COMPILE_OPTIONS})
-endif()
-
+# 3. 순서 조정하기
