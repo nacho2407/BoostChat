@@ -1,5 +1,5 @@
-# BoostChat
+# 🌪️ boost-chat
 
-A simple and fast chat service
+A simple and fast instant group chat program
 
 *Under construction*

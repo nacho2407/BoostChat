@@ -1,28 +1,42 @@
-set(BOOST_CHAT_SERVER_INSTALL ${BOOST_CHAT_INSTALL}/server)
+set(BOOST_CHAT_SERVER_INSTALL_PATH ${BOOST_CHAT_INSTALL_PATH}/server)
 
-set(BOOST_LIBS_INCLUDE ${BOOST_LIBS}/include)
+add_executable(boost-chat-server)
 
-find_library(BOOST_SYSTEM boost_system PATHS ${BOOST_LIBS}/lib)
-find_library(BOOST_SERIALIZATION boost_serialization PATHS ${BOOST_LIBS}/lib)
-
-set(CMAKE_INSTALL_RPATH "$ORIGIN/lib")
-
-add_executable(boost-chat-server logger.cpp main.cpp server.cpp session.cpp)
-
-target_include_directories(boost-chat-server PUBLIC ${BOOST_LIBS_INCLUDE})
-target_link_libraries(boost-chat-server PUBLIC ${BOOST_SYSTEM} ${BOOST_SERIALIZATION})
-
-install(
-        TARGETS boost-chat-server
-        RUNTIME DESTINATION ${BOOST_CHAT_SERVER_INSTALL}
+set_target_properties(boost-chat-server PROPERTIES
+    INSTALL_RPATH "$ORIGIN;$ORIGIN/lib"
 )
 
-# TODO
+target_sources(boost-chat-server
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/logger.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/server.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/session.cpp
+        ${BOOST_CHAT_SHARED}/src/message.cpp
+)
 
-# (상수 이름 신경쓰기)
+target_include_directories(boost-chat-server
+    PRIVATE
+        ${BOOST_CHAT_SHARED}/include
+        ${EXT_LIBS}
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
-# 1. shared 연결하기
+target_link_libraries(boost-chat-server
+    PRIVATE
+        ${BOOST_SYSTEM}
+        ${BOOST_SERIALIZATION}
+)
 
-# 2. boost libraries install하기
+install(TARGETS boost-chat-server
+    RUNTIME DESTINATION ${BOOST_CHAT_SERVER_INSTALL_PATH}
+)
 
-# 3. 순서 조정하기
+file(GLOB BOOST_CHAT_SERVER_DEP_LIBS
+    "${EXT_LIBS}/boost/lib/libboost_system.so*"
+    "${EXT_LIBS}/boost/lib/libboost_serialization.so*"
+)
+
+install(FILES ${BOOST_CHAT_SERVER_DEP_LIBS}
+    DESTINATION ${BOOST_CHAT_INSTALL_PATH}/lib
+)
