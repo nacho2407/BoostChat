@@ -2,7 +2,7 @@
 
 #define BOOST_CHAT_DEFAULT_PORT 24072
 
-#include "../lib/server.hpp"
+#include "server.hpp"
 
 #include <boost/asio.hpp>
 
@@ -21,29 +21,39 @@ int main(int argc, char *argv[])
     unsigned short port = BOOST_CHAT_DEFAULT_PORT;
 
     if (argc > 2) {
-        std::cerr << "Usage: BoostChat-server [port = " << BOOST_CHAT_DEFAULT_PORT << "]\n";
+        std::cerr << "Usage: BoostChat-server [port=" << BOOST_CHAT_DEFAULT_PORT << "]\n";
 
-        std::exit(1);
+        return 1;
     } else if (argc == 2) {
         try {
-            port = std::stoi(arg[1]);
-        } catch (const std::invalid_argument &e) {
-            std::cerr << "Invalid port number.\n"
-                      << "Usage: BoostChat-server [port = " << BOOST_CHAT_DEFAULT_PORT << "]\n";
+            port = std::stoi(argv[1]);
+        } catch (const std::invalid_argument& e) {
+            std::cerr << "Error: Invalid port number.\n"
+                << "Usage: BoostChat-server [port=" << BOOST_CHAT_DEFAULT_PORT << "]\n";
 
-            std::exit(1);
+            return 1;
         }
     }
 
     std::cout << "================================\n\n"
 
-              << "\tBoostChat-server\n\n"
+        << "______                    _____             ______        _____\n"
+        << "___  /______________________  /_      _________  /_______ __  /_\n"
+        << "__  __ \  __ \  __ \_  ___/  __/_______  ___/_  __ \  __ `/  __/\n"
+        << "_  /_/ / /_/ / /_/ /(__  )/ /_ _/_____/ /__ _  / / / /_/ // /_ \n"
+        << "/_.___/\____/\____//____/ \__/        \___/ /_/ /_/\__,_/ \__/  server\n\n"
 
-              << "\tver. " << BOOST_CHAT_SERVER_VERSION << "\n\n"
+        << "    ver. " << BOOST_CHAT_SERVER_VERSION << "\n\n"
 
-              << "================================" << std::endl;
+        << "================================" << std::endl;
 
-    run_server(port);
+    try {
+        run_server(port);
+    } catch (const std::exception& e) {
+        std::cerr << "Fatal error: " << e.what() << '\n';
+
+        return 1;
+    }
 
     return 0;
 }
